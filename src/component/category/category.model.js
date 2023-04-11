@@ -16,4 +16,10 @@ const schema = Schema({
 
 }, { timestamps: true })
 
+
+//Return Full base url for category image
+schema.post('init', (doc) => {
+    doc.image = 'http://localhost:3000/category/' + doc.image
+})
+
 module.exports = model('category', schema)

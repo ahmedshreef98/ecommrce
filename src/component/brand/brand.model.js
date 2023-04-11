@@ -15,4 +15,9 @@ const schema = Schema({
     image: String
 }, { timestamps: true })
 
+
+//Return Full url for Brand image
+schema.post('init', (doc) => {
+    doc.image = 'http://localhost:3000/brand/' + doc.image
+})
 module.exports = model('brand', schema)

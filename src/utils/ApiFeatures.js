@@ -1,20 +1,22 @@
-const { models } = require("mongoose")
 
 class ApiFeatures {
     constructor(mongooseQuery, queryString) {
         this.mongooseQuery = mongooseQuery
         this.queryString = queryString
+
     }
+
 
 
     //Pagination Logic----------------------------------------------------------------
     paginate() {
         let page = this.queryString.page * 1 || 1
-        if (page < 0) page = 1
-        let limit = 20
+        if (page < 1) page = 1
+        let limit = 5
         let skip = (page - 1) * limit
         this.mongooseQuery.skip(skip).limit(limit)
         this.page = page
+        this.limit = limit
         return this;
     }
 

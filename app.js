@@ -17,7 +17,7 @@ const port = process.env.PORT || 4000
 
 //MiddleWares
 app.use(express.json())
-
+app.use(express.static('uploads'))
 app.use('/categories',
     require('./src/component/category/category.api.js'))
 if (process.env.MODE_ENV === 'development') {
@@ -42,6 +42,12 @@ if (process.env.MODE_ENV === 'development') {
     app.use(morgan('dev'))
 }
 
+app.use('/users',
+    require('./src/component/user/user.api.js'))
+if (process.env.MODE_ENV === 'development') {
+    app.use(morgan('dev'))
+}
+
 
 //Handle unhandled Route Requests
 app.all("*", (req, res, next) => {
@@ -51,7 +57,7 @@ app.all("*", (req, res, next) => {
     next(new AppError(`Can't Find This Route ${req.originalUrl} On Server`, 404))
 })
 
-//Handle Error handling MiddleWare
+//Handle Error  MiddleWare
 app.use(globalMiddlewareErr)
 
 

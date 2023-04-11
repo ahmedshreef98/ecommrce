@@ -26,7 +26,7 @@ const schema = Schema({
         type: String
     },
     role: {
-        type: Stirng,
+        type: String,
         enum: ['admin', 'user']  //enum select value from we spiecfed them  
     },
     isActive: {

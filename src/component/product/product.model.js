@@ -76,4 +76,14 @@ const schema = Schema({
 
 }, { timestamps: true }) //timestamps --> used for adding creating at 
 
+//Return Full Url for products' images
+schema.post('init', (doc) => {
+    let imgs = []
+    doc.imageCover = 'http://localhost:3000/product/' + doc.imageCover
+    doc.images.forEach((elm) => {
+        imgs.push('http://localhost:3000/product/' + elm)
+    })
+    doc.images = imgs
+})
+
 module.exports = model('product', schema)
