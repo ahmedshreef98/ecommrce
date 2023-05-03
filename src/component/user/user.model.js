@@ -1,5 +1,5 @@
 const { Schema, model, Types } = require('mongoose')
-
+const bcrypt = require('bcrypt')
 const schema = Schema({
     name: {
         type: String,
@@ -18,6 +18,7 @@ const schema = Schema({
         required: [true, 'Password Required'],
         min: [5, 'Password length must be greater than 6 digits']
     },
+    changePasswordAt: { Date },
     phone: {
         type: String,
         required: [true, 'Phone Required'],
@@ -27,12 +28,24 @@ const schema = Schema({
     },
     role: {
         type: String,
-        enum: ['admin', 'user']  //enum select value from we spiecfed them  
+        enum: ['admin', 'user'],  //enum select value
+        default: 'user'
     },
     isActive: {
         type: Boolean,
         default: true
     }
 }, { timestamps: true })
+
+//Mongoose Hooks
+schema.pre('save', async function () {
+    // This Refer to Schema DATA !@
+    this.password = await bcrypt.hash(this.password, Number(process.env.ROUND))
+})
+//---------------------------
+schema.pre('findOneAndUpdate', async function () {
+    // This Refer to  Global  DATA !@
+    this._update.password = await bcrypt.hash(this._update.password, Number(process.env.ROUND))
+})
 
 module.exports = model('user', schema)
